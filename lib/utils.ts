@@ -6,5 +6,11 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function absoluteUrl(path: string) {
-  return `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
+  // development
+  if (process.env.NODE_ENV === "development") {
+    return `${process.env.NEXT_PUBLIC_LOCAL_URL}${path}`;
+    // production
+  } else {
+    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${path}`;
+  }
 }

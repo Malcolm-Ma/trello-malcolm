@@ -12,16 +12,29 @@ export async function POST(req: Request) {
   let event: Stripe.Event;
 
   try {
+    const stripeWebhookSecret = (() => {
+      if (process.env.NODE_ENV === "development") {
+        return process.env.STRIPE_WEBHOOK_SECRET!;
+      } else {
+        if (
+          process.env.NEXT_PUBLIC_VERCEL_URL?.endsWith("vercel.app") &&
+          !!process.env.STRIPE_WEBHOOK_SECRET_VERCEL
+        ) {
+          return process.env.STRIPE_WEBHOOK_SECRET_VERCEL;
+        }
+        return process.env.STRIPE_WEBHOOK_SECRET!;
+      }
+    })();
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      stripeWebhookSecret
     );
   } catch (error) {
     return new NextResponse("Webhook error", { status: 400 });
   }
 
-  const session = event.data.object as Stripe.Checkout.Session;  
+  const session = event.data.object as Stripe.Checkout.Session;
 
   if (event.type === "checkout.session.completed") {
     const subscription = await stripe.subscriptions.retrieve(
