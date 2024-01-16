@@ -1,0 +1,17 @@
+name: Merge any mian branch to preview
+on:
+  push:
+    branches:
+      - 'main'
+jobs:
+  merge-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Merge staging -> preview
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          target_branch: preview
+          github_token: ${{ secrets.GITHUB_TOKEN }}
