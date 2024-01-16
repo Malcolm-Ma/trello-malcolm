@@ -1,17 +1,23 @@
-name: Merge any mian branch to preview
+name: Sync to Preview Branch
+
 on:
   workflow_dispatch:
   push:
     branches:
-      - 'main'
+      - main
+
 jobs:
-  merge-branch:
+  sync-to-preview:
     runs-on: ubuntu-latest
     steps:
-      - name: Merge master back to preview
+      - name: Checkout main branch
+        uses: actions/checkout@v2
+        with:
+          ref: 'main'
+      
+      - name: Push changes to preview branch
         run: |
-          git fetch --unshallow
-          git checkout preview
-          git pull
-          git merge master
-          git push
+          git checkout -b preview
+          git pull origin preview
+          git merge main --no-edit
+          git push origin preview
