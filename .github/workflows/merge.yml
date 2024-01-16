@@ -21,5 +21,5 @@ jobs:
         run: |
           git fetch
           git checkout preview
-          git merge --strategy=theris main
-          git push origin preview
+          git merge main --force
+          git push origin preview --force
