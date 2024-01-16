@@ -1,5 +1,6 @@
 name: Merge any mian branch to preview
 on:
+  workflow_dispatch:
   push:
     branches:
       - 'main'
@@ -7,11 +8,14 @@ jobs:
   merge-branch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-
-      - name: Merge staging -> preview
-        uses: devmasx/merge-branch@master
-        with:
-          type: now
-          target_branch: preview
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set Git config
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+      - name: Merge master back to preview
+        run: |
+          git fetch --unshallow
+          git checkout preview
+          git pull
+          git merge master
+          git push
