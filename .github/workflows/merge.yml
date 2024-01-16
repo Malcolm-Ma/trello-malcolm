@@ -19,7 +19,6 @@ jobs:
       
       - name: Sync main to preview
         run: |
-          git fetch origin preview
           git checkout preview
           git merge --ff-only origin/main
           git push origin preview
