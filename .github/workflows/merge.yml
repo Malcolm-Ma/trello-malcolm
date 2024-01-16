@@ -21,5 +21,5 @@ jobs:
         run: |
           git fetch
           git checkout preview
-          git merge main --force
+          git merge main --no-commit
           git push origin preview --force
