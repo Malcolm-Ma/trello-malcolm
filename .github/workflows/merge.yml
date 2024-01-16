@@ -17,6 +17,7 @@ jobs:
       
       - name: Push changes to preview branch
         run: |
+          git config pull.rebase true
           git checkout -b preview
           git pull origin preview
           git merge main --no-edit
