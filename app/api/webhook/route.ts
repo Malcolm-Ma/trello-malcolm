@@ -17,7 +17,7 @@ export async function POST(req: Request) {
         return process.env.STRIPE_WEBHOOK_SECRET!;
       } else {
         if (
-          process.env.NEXT_PUBLIC_VERCEL_URL?.endsWith("vercel.app") &&
+          process.env.NEXT_PUBLIC_APP_URL?.endsWith("vercel.app") &&
           !!process.env.STRIPE_WEBHOOK_SECRET_VERCEL
         ) {
           return process.env.STRIPE_WEBHOOK_SECRET_VERCEL;
